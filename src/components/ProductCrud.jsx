@@ -3,7 +3,7 @@ import { Card, Typography, Button, Input } from "@material-tailwind/react";
 
 const ProductCrud = () => {
   const [productos, setProductos] = useState([]);
-  const [usuarios, setUsuarios] = useState([]); // Para asociar productos a usuarios
+  const [usuarios, setUsuarios] = useState([]);
   const [nombre, setNombre] = useState("");
   const [idUsuario, setIdUsuario] = useState("");
   const [editingProductId, setEditingProductId] = useState(null);
@@ -15,7 +15,7 @@ const ProductCrud = () => {
       .then((data) => setProductos(data))
       .catch((err) => console.error("Error al obtener productos:", err));
 
-    // Obtener lista de usuarios (para asociar productos)
+    // Obtener lista de usuarios
     fetch("http://localhost:5000/usuarios")
       .then((res) => res.json())
       .then((data) => setUsuarios(data))

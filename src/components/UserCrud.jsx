@@ -8,50 +8,45 @@ const UserCrud = () => {
   const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
+    // Obtener usuarios al montar el componente
     fetch("http://localhost:5000/usuarios")
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((err) => console.error("Error al obtener usuarios:", err));
   }, []);
 
-  const handleAddUser = () => {
+  const handleAddOrUpdateUser = () => {
     const user = { nombre, password };
 
-    fetch("http://localhost:5000/usuarios", {
-      method: "POST",
+    const url = editingUserId
+      ? `http://localhost:5000/usuarios/${editingUserId}`
+      : "http://localhost:5000/usuarios";
+    const method = editingUserId ? "PUT" : "POST";
+
+    fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     })
       .then((res) => res.json())
       .then((newUser) => {
-        setUsuarios([...usuarios, newUser]);
-        setNombre("");
-        setPassword("");
+        if (editingUserId) {
+          setUsuarios((prevUsuarios) =>
+            prevUsuarios.map((user) =>
+              user.id === editingUserId ? { ...user, ...newUser } : user
+            )
+          );
+        } else {
+          setUsuarios((prevUsuarios) => [...prevUsuarios, newUser]);
+        }
+        resetForm();
       })
-      .catch((err) => console.error("Error al agregar usuario:", err));
-  };
-
-  const handleEditUser = (id, updatedUser) => {
-    fetch(`http://localhost:5000/usuarios/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedUser),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setUsuarios(
-          usuarios.map((user) => (user.id === id ? { ...user, ...updatedUser } : user))
-        );
-        setEditingUserId(null);
-        setNombre("");
-        setPassword("");
-      })
-      .catch((err) => console.error("Error al editar usuario:", err));
+      .catch((err) => console.error("Error al agregar o editar usuario:", err));
   };
 
   const handleDeleteUser = (id) => {
     fetch(`http://localhost:5000/usuarios/${id}`, { method: "DELETE" })
-      .then(() => setUsuarios(usuarios.filter((user) => user.id !== id)))
+      .then(() => setUsuarios((prevUsuarios) => prevUsuarios.filter((user) => user.id !== id)))
       .catch((err) => console.error("Error al eliminar usuario:", err));
   };
 
@@ -59,6 +54,12 @@ const UserCrud = () => {
     setEditingUserId(user.id);
     setNombre(user.nombre);
     setPassword(""); // No se muestra la contraseña
+  };
+
+  const resetForm = () => {
+    setNombre("");
+    setPassword("");
+    setEditingUserId(null);
   };
 
   return (
@@ -84,11 +85,7 @@ const UserCrud = () => {
           />
           <Button
             className={editingUserId ? "bg-yellow-400 h-10 px-5" : "bg-green-600 h-10 px-5"}
-            onClick={() =>
-              editingUserId
-                ? handleEditUser(editingUserId, { nombre, password })
-                : handleAddUser()
-            }
+            onClick={handleAddOrUpdateUser}
           >
             {editingUserId ? "Actualizar" : "Agregar"}
           </Button>
