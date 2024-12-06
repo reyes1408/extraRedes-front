@@ -58,7 +58,7 @@ const UserCrud = () => {
   const startEditing = (user) => {
     setEditingUserId(user.id);
     setNombre(user.nombre);
-    setPassword(user.password);
+    setPassword(""); // No se muestra la contraseña
   };
 
   return (
@@ -115,15 +115,6 @@ const UserCrud = () => {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  Contraseña
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
                   Opciones
                 </Typography>
               </th>
@@ -139,11 +130,6 @@ const UserCrud = () => {
                   <td className={classes}>
                     <Typography variant="small" color="blue-gray">
                       {usuario.nombre}
-                    </Typography>
-                  </td>
-                  <td className={classes}>
-                    <Typography variant="small" color="blue-gray">
-                      {usuario.password}
                     </Typography>
                   </td>
                   <td className={classes}>

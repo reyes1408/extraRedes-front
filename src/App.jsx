@@ -1,15 +1,23 @@
-import UserCrud from './components/UserCrud';
-import ProductCrud from './components/ProductCrud';
+import { useState } from "react";
+import Login from "./components/Login";
+import UserCrud from "./components/UserCrud"; // Vistas protegidas
+import Cultivos from "./components/ProductCrud"; // Otra vista protegida
 
-function App() {
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
-    <div className="App">
-      <div className="container mx-auto">
-        <UserCrud />
-        <ProductCrud />
-      </div>
+    <div>
+      {loggedIn ? (
+        <div>
+          <UserCrud />
+          <Cultivos />
+        </div>
+      ) : (
+        <Login onLogin={() => setLoggedIn(true)} />
+      )}
     </div>
   );
-}
+};
 
 export default App;
