@@ -6,7 +6,7 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState("");
 
   const handleLogin = () => {
-    fetch("http://localhost:5000/login", {
+    fetch("https://redes-extra.onrender.com/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, password }),
