@@ -6,14 +6,16 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState("");
 
   const handleLogin = () => {
-    fetch("https://redes-extra.onrender.com/login", {
+    fetch("http://localhost:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, password }),
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) throw new Error("Credenciales inválidas");
-        return res.json();
+        const data = await res.json();
+        localStorage.setItem('authToken', data.token);
+        return data
       })
       .then(() => {
         setError("");

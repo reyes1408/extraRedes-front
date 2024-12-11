@@ -8,8 +8,15 @@ const UserCrud = () => {
   const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
+
+    // const token = localStorage.getItem("authenticateToken")
     // Obtener usuarios al montar el componente
-    fetch("https://redes-extra.onrender.com/usuarios")
+    fetch("http://localhost:5000/usuarios", {
+      method: "GET",
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
+    })
       .then((res) => res.json())
       .then((data) => setUsuarios(data))
       .catch((err) => console.error("Error al obtener usuarios:", err));
@@ -19,8 +26,8 @@ const UserCrud = () => {
     const user = { nombre, password };
 
     const url = editingUserId
-      ? `https://redes-extra.onrender.com/usuarios/${editingUserId}`
-      : "https://redes-extra.onrender.com/usuarios";
+      ? `http://localhost:5000/usuarios/${editingUserId}`
+      : "http://localhost:5000/usuarios";
     const method = editingUserId ? "PUT" : "POST";
 
     fetch(url, {
@@ -45,7 +52,7 @@ const UserCrud = () => {
   };
 
   const handleDeleteUser = (id) => {
-    fetch(`https://redes-extra.onrender.com/usuarios/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:5000/usuarios/${id}`, { method: "DELETE" })
       .then(() => setUsuarios((prevUsuarios) => prevUsuarios.filter((user) => user.id !== id)))
       .catch((err) => console.error("Error al eliminar usuario:", err));
   };
