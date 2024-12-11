@@ -12,13 +12,13 @@ const ProductCrud = () => {
 
     // const token = localStorage.getItem("authenticateToken")
     // Obtener lista de productos
-    fetch("http://localhost:5000/productos")
+    fetch("https://redes-extra.onrender.com/productos")
       .then((res) => res.json())
       .then((data) => setProductos(data))
       .catch((err) => console.error("Error al obtener productos:", err));
 
     // Obtener lista de usuarios
-    fetch("http://localhost:5000/usuarios", {
+    fetch("https://redes-extra.onrender.com/usuarios", {
       method: "GET",
       // headers: {
       //   Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ const ProductCrud = () => {
   const handleAddProduct = () => {
     const product = { nombre, idUsuario };
 
-    fetch("http://localhost:5000/productos", {
+    fetch("https://redes-extra.onrender.com/productos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
@@ -47,7 +47,7 @@ const ProductCrud = () => {
   };
 
   const handleEditProduct = (id, updatedProduct) => {
-    fetch(`http://localhost:5000/productos/${id}`, {
+    fetch(`https://redes-extra.onrender.com/productos/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProduct),
@@ -67,7 +67,7 @@ const ProductCrud = () => {
   };
 
   const handleDeleteProduct = (id) => {
-    fetch(`http://localhost:5000/productos/${id}`, { method: "DELETE" })
+    fetch(`https://redes-extra.onrender.com/productos/${id}`, { method: "DELETE" })
       .then(() => setProductos(productos.filter((product) => product.id !== id)))
       .catch((err) => console.error("Error al eliminar producto:", err));
   };
